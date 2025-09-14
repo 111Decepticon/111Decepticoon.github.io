@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>探索海绵宝宝的世界</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a5fb4 0%, #2b6cc4 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 0 30px;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        h1 {
+            font-size: 4rem;
+            color: #ffcc00;
+            text-shadow: 3px 3px 0 #ff6b00, 
+                         -1px -1px 0 #fff, 
+                         1px -1px 0 #fff, 
+                         -1px 1px 0 #fff, 
+                         1px 1px 0 #fff;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 2rem;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 0;
+            margin: 40px 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+            padding: 0 30px;
+        }
+        
+        .text-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .image-content {
+            flex: 1;
+            text-align: center;
+            min-width: 300px;
+        }
+        
+        .image-content img {
+            max-width: 100%;
+            border-radius: 15px;
+            border: 5px solid #ffcc00;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+        
+        .image-content img:hover {
+            transform: scale(1.05);
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            color: #0c4da2;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #ffcc00;
+            padding-bottom: 10px;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .character-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            border: 3px solid #ffcc00;
+        }
+        
+        .character-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .character-card img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #0c4da2;
+            margin: 0 auto 15px;
+        }
+        
+        .house-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .house {
+            text-align: center;
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .house img {
+            max-width: 100%;
+            border-radius: 15px;
+            border: 5px solid #ff6b00;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+        
+        .house img:hover {
+            transform: scale(1.05);
+        }
+        
+        .bubble {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 8s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(20px);
+                opacity: 0;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #fff;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .section-content {
+                flex-direction: column;
+            }
+            
+            .text-content, .image-content {
+                min-width: 100%;
+            }
+            
+            .house-comparison {
+                flex-direction: column;
+            }
+        }
+        
+        /* 进度指示器 */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 1000;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: #ffcc00;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        /* 分区标识 */
+        .section-indicator {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 999;
+        }
+        
+        .indicator-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid #ffcc00;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .indicator-dot.active {
+            background: #ffcc00;
+            transform: scale(1.3);
+        }
+        
+        .indicator-dot:hover {
+            background: #ff6b00;
+        }
+    </style>
+</head>
+<body>
+    <!-- 进度条 -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    
+    <!-- 分区指示器 -->
+    <div class="section-indicator">
+        <div class="indicator-dot active" data-section="header"></div>
+        <div class="indicator-dot" data-section="spongebob"></div>
+        <div class="indicator-dot" data-section="pineapple"></div>
+        <div class="indicator-dot" data-section="gary"></div>
+        <div class="indicator-dot" data-section="friends"></div>
+        <div class="indicator-dot" data-section="houses"></div>
+    </div>
+    
+    <!-- 气泡背景 -->
+    <div id="bubbles-container"></div>
+    
+    <div class="container">
+        <header id="header">
+            <h1>探索海绵宝宝的世界</h1>
+            <p class="subtitle">向下滚动，发现比奇堡的奇妙居民和他们的家园</p>
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </header>
+        
+        <!-- 第一部分：海绵宝宝 -->
+        <section id="spongebob">
+            <div class="section-content">
+                <div class="text-content">
+                    <h2>海绵宝宝</h2>
+                    <p>海绵宝宝是一个快乐、乐观的黄色海绵，他住在太平洋比奇堡海滩的一个菠萝屋里。他在蟹堡王餐厅工作，是一名出色的煎炸厨师，擅长制作美味的蟹堡。</p>
+                    <p>海绵宝宝性格开朗，充满热情，虽然有时会惹麻烦，但他的善良和乐观总是能感染周围的人。他最好的朋友是派大星，他们总是一起冒险！</p>
+                    <p>海绵宝宝喜欢捕捉水母、吹泡泡和空手道。他的笑声非常有感染力，总是能让周围的人感到快乐。</p>
+                </div>
+                <div class="image-content">
+                    <img src="海绵宝宝.jpg" alt="海绵宝宝">
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第二部分：菠萝屋 -->
+        <section id="pineapple">
+            <div class="section-content">
+                <div class="text-content">
+                    <h2>菠萝屋</h2>
+                    <p>海绵宝宝住在一个大型菠萝屋里，位于比奇堡的珊瑚街上。菠萝屋内部装饰独特，充满了海洋元素和海绵宝宝的个人风格。</p>
+                    <p>这座房子有客厅、厨房、卧室和地下室，还有一个前院，里面有一个精美的花园。菠萝屋是比奇堡最独特的住宅之一。</p>
+                    <p>有趣的是，这个菠萝实际上是一个从船上掉下来的真实菠萝，海绵宝宝发现后决定把它改造成自己的家。</p>
+                </div>
+                <div class="image-content">
+                    <img src="菠萝屋.jpg" alt="菠萝屋">
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第三部分：小蜗 -->
+        <section id="gary">
+            <div class="section-content">
+                <div class="text-content">
+                    <h2>小蜗</h2>
+                    <p>小蜗是海绵宝宝的宠物蜗牛，它虽然不是真正的猫，但行为却很像一只猫。小蜗是海绵宝宝最亲密的伙伴之一，经常陪伴在他身边。</p>
+                    <p>小蜗最特别的地方是它能够说话，虽然通常只说"喵～"，但有时也会说出完整的句子。它非常聪明，甚至比海绵宝宝的一些朋友更聪明。</p>
+                    <p>小蜗喜欢吃蜗牛饲料，特别是高质量的品牌。它还有一个特点是当海绵宝宝不在家时，会偷偷穿上他的衣服和假发，模仿主人的行为。</p>
+                </div>
+                <div class="image-content">
+                    <img src="小蜗.jpg" alt="小蜗">
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第四部分：好朋友 -->
+        <section id="friends">
+            <h2>海绵宝宝的好朋友们</h2>
+            <div class="character-grid">
+                <div class="character-card">
+                    <img src="派大星.jpg" alt="派大星">
+                    <h3>派大星</h3>
+                    <p>派大星是一只粉色的海星，是海绵宝宝最好的朋友。他性格天真、单纯，有时显得有点笨拙，但对朋友非常忠诚。</p>
+                </div>
+                
+                <div class="character-card">
+                    <img src="章鱼哥.jpg" alt="章鱼哥">
+                    <h3>章鱼哥</h3>
+                    <p>章鱼哥是海绵宝宝的邻居，在蟹堡王担任收银员。他性格悲观、愤世嫉俗，喜欢安静和演奏单簧管。</p>
+                </div>
+                
+                <div class="character-card">
+                    <img src="珊迪.jpg" alt="珊迪">
+                    <h3>珊迪</h3>
+                    <p>珊迪是一只来自德克萨斯州的松鼠，她是一位科学家和发明家。珊迪热爱空手道和各种科学实验。</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第五部分：房子 -->
+        <section id="houses">
+            <h2>章鱼哥和派大星的房子</h2>
+            <div class="house-comparison">
+                <div class="house">
+                    <h3>章鱼哥的房子</h3>
+                    <img src="人.jpg" alt="章鱼哥的房子">
+                    <p>章鱼哥住在一座复活节岛头像形状的房子里，位于海绵宝宝的菠萝屋和派大星的石头屋之间。房子内部装饰体现了章鱼哥对艺术和文化的追求。</p>
+                </div>
+                
+                <div class="house">
+                    <h3>派大星的房子</h3>
+                    <img src="石头.jpg" alt="派大星的房子">
+                    <p>派大星住在一块大石头下面，内部装饰简单但舒适。这个住所反映了派大星简单随性的性格，虽然简陋，但对他来说已经足够了。</p>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>© 2025探索海绵宝宝的世界 | 比奇堡</p>
+            <p>本网站仅用于作业，海绵宝宝相关角色版权归其所有者所有</p>
+        </footer>
+    </div>
+
+    <script>
+        // 创建气泡背景
+        function createBubbles() {
+            const bubblesContainer = document.getElementById('bubbles-container');
+            const bubblesCount = 25;
+            
+            for (let i = 0; i < bubblesCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // 随机大小和位置
+                const size = Math.random() * 50 + 10;
+                const left = Math.random() * 100;
+                
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${left}vw`;
+                bubble.style.bottom = `${Math.random() * 20}px`;
+                
+                // 随机动画延迟
+                bubble.style.animationDelay = `${Math.random() * 5}s`;
+                
+                bubblesContainer.appendChild(bubble);
+            }
+        }
+        
+        // 更新进度条
+        function updateProgressBar() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        }
+        
+        // 更新活动指示点
+        function updateActiveIndicator() {
+            const sections = document.querySelectorAll('section, header');
+            const indicatorDots = document.querySelectorAll('.indicator-dot');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (pageYOffset >= sectionTop - sectionHeight / 3) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            indicatorDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-section') === currentSection) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+        
+        // 点击指示点滚动到对应区域
+        function setupIndicatorScroll() {
+            const indicatorDots = document.querySelectorAll('.indicator-dot');
+            
+            indicatorDots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-section');
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            createBubbles();
+            setupIndicatorScroll();
+            
+            window.addEventListener('scroll', function() {
+                updateProgressBar();
+                updateActiveIndicator();
+            });
+            
+            // 初始更新一次
+            updateProgressBar();
+            updateActiveIndicator();
+        });
+    </script>
+</body>
+</html>
